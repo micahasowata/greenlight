@@ -16,5 +16,4 @@ func (app *application) healthcheckHandler(w http.ResponseWriter, r *http.Reques
 		app.logger.Println(err)
 		http.Error(w, "the server encountered a problem and could not process your request", http.StatusInternalServerError)
 	}
-
 }
