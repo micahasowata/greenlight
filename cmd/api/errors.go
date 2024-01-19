@@ -31,6 +31,11 @@ func (app *application) resourceNotFoundResponse(w http.ResponseWriter, r *http.
 	app.errorResponse(w, r, http.StatusNotFound, message)
 }
 
+func (app *application) pathNotFoundResponse(w http.ResponseWriter, r *http.Request) {
+	message := fmt.Sprintf("%s could not be found", r.URL.RawPath)
+	app.errorResponse(w, r, http.StatusNotFound, message)
+}
+
 func (app *application) methodNotAllowedResponse(w http.ResponseWriter, r *http.Request) {
 	message := fmt.Sprintf("%s requests are not supported for %s", r.Method, r.URL.Path)
 	app.errorResponse(w, r, http.StatusMethodNotAllowed, message)
