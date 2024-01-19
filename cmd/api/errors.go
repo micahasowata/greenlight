@@ -32,7 +32,7 @@ func (app *application) resourceNotFoundResponse(w http.ResponseWriter, r *http.
 }
 
 func (app *application) pathNotFoundResponse(w http.ResponseWriter, r *http.Request) {
-	message := fmt.Sprintf("%s could not be found", r.URL.RawPath)
+	message := fmt.Sprintf("%s could not be found", r.URL.Path)
 	app.errorResponse(w, r, http.StatusNotFound, message)
 }
 
