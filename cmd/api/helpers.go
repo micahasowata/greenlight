@@ -44,6 +44,9 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data envelo
 }
 
 func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst any) error {
+	maxBytes := 1_048_576
+	r.Body = http.MaxBytesReader(w, r.Body, int64(maxBytes))
+
 	err := json.NewDecoder(r.Body).Decode(&dst)
 	if err != nil {
 		var syntaxError *json.SyntaxError
