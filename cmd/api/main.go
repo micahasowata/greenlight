@@ -8,30 +8,22 @@ import (
 	"os"
 	"time"
 
-	_ "github.com/lib/pq"
+	"github.com/spobly/greenlight/internal/config"
 )
 
 const version = "1.0.0"
 
-type config struct {
-	port int
-	env  string
-	db   struct {
-		dsn string
-	}
-}
-
 type application struct {
-	config config
+	config config.Config
 	logger *log.Logger
 }
 
 func main() {
-	var cfg config
+	var cfg config.Config
 
-	flag.IntVar(&cfg.port, "port", 4000, "API server port")
-	flag.StringVar(&cfg.env, "env", "development", "development|staging|production")
-	flag.StringVar(&cfg.db.dsn, "db-dsn", os.Getenv("DB_DSN"), "PostgresQL dsn")
+	flag.IntVar(&cfg.Port, "port", 4000, "API server port")
+	flag.StringVar(&cfg.Env, "env", "development", "development|staging|production")
+	flag.StringVar(&cfg.Db.DSN, "db-dsn", os.Getenv("DB_DSN"), "PostgresQL dsn")
 	flag.Parse()
 
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
@@ -42,14 +34,14 @@ func main() {
 	}
 
 	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%d", cfg.port),
+		Addr:         fmt.Sprintf(":%d", cfg.Port),
 		Handler:      app.routes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
 
-	logger.Printf("starting %s server on %s", cfg.env, srv.Addr)
+	logger.Printf("starting %s server on %s", cfg.Env, srv.Addr)
 
 	err := srv.ListenAndServe()
 	log.Fatal(err)
