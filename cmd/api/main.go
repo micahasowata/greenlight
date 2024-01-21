@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	"github.com/spobly/greenlight/internal/config"
 	"github.com/spobly/greenlight/internal/data"
 )
@@ -20,6 +21,13 @@ type application struct {
 }
 
 func main() {
+	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+
+	err := godotenv.Load()
+	if err != nil {
+		logger.Fatal(err)
+	}
+
 	var cfg config.Config
 
 	flag.IntVar(&cfg.Port, "port", 4000, "API server port")
@@ -27,11 +35,9 @@ func main() {
 	flag.StringVar(&cfg.Db.DSN, "db-dsn", os.Getenv("DB_DSN"), "PostgresQL dsn")
 	flag.Parse()
 
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
-
 	db, err := data.OpenDB(cfg)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	defer db.Close()
