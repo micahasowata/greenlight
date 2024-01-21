@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/spobly/greenlight/internal/config"
+	"github.com/spobly/greenlight/internal/data"
 )
 
 const version = "1.0.0"
@@ -28,6 +29,15 @@ func main() {
 
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
+	db, err := data.OpenDB(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer db.Close()
+
+	logger.Println("database connection pool established")
+
 	app := &application{
 		config: cfg,
 		logger: logger,
@@ -43,6 +53,6 @@ func main() {
 
 	logger.Printf("starting %s server on %s", cfg.Env, srv.Addr)
 
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	log.Fatal(err)
 }
