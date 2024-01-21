@@ -4,6 +4,9 @@ type Config struct {
 	Port int
 	Env  string
 	Db   struct {
-		DSN string
+		DSN          string
+		MaxOpenConns int
+		MaxIdleConns int
+		MaxIdleTime  string
 	}
 }
