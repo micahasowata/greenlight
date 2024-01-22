@@ -104,7 +104,7 @@ func (m MovieModel) Update(movie *Movie) error {
 	return m.DB.QueryRow(query, args...).Scan(&movie.Version)
 }
 
-func (m MovieModel) Delete(id int) error {
+func (m MovieModel) Delete(id int64) error {
 	if id < 1 {
 		return ErrRecordNotFound
 	}
