@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/spobly/greenlight/internal/validator"
 )
 
 func (app *application) readIDParam(r *http.Request) (int64, error) {
@@ -116,4 +117,20 @@ func (app *application) readCSV(qs url.Values, key string, defaultValue []string
 	}
 
 	return strings.Split(csv, ",")
+}
+
+func (app *application) readInt(qs url.Values, key string, defaultValue int, v *validator.Validator) int {
+	s := qs.Get(key)
+
+	if s == "" {
+		return defaultValue
+	}
+
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		v.AddErrors(key, "must be integer value")
+		return defaultValue
+	}
+
+	return i
 }
