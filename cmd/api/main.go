@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"time"
@@ -17,16 +18,21 @@ const version = "1.0.0"
 
 type application struct {
 	config config.Config
-	logger *log.Logger
+	logger *slog.Logger
 	models data.Models
 }
 
 func main() {
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		AddSource: true,
+		Level:     slog.LevelInfo,
+	}))
+	slog.SetDefault(logger)
 
 	err := godotenv.Load()
 	if err != nil {
-		logger.Fatal(err)
+		logger.Error(err.Error())
+		os.Exit(1)
 	}
 
 	var cfg config.Config
@@ -41,12 +47,13 @@ func main() {
 
 	db, err := data.OpenDB(cfg)
 	if err != nil {
-		logger.Fatal(err)
+		logger.Error(err.Error())
+		os.Exit(1)
 	}
 
 	defer db.Close()
 
-	logger.Println("database connection pool established")
+	logger.Info("database connection pool established")
 
 	app := &application{
 		config: cfg,
@@ -62,7 +69,7 @@ func main() {
 		WriteTimeout: 30 * time.Second,
 	}
 
-	logger.Printf("starting %s server on %s", cfg.Env, srv.Addr)
+	logger.Info("starting server", slog.String("env", cfg.Env), slog.String("addr", srv.Addr))
 
 	err = srv.ListenAndServe()
 	log.Fatal(err)
