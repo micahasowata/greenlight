@@ -9,4 +9,10 @@ type Config struct {
 		MaxIdleConns int
 		MaxIdleTime  string
 	}
+
+	Limiter struct {
+		RPS     float64
+		Burst   int
+		Enabled bool
+	}
 }

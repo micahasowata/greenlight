@@ -42,6 +42,9 @@ func main() {
 	flag.IntVar(&cfg.Db.MaxOpenConns, "db-max-open-conns", 25, "PostgresQL max open connections")
 	flag.IntVar(&cfg.Db.MaxIdleConns, "db-max-idle-conns", 25, "PostgresQL max idle connections")
 	flag.StringVar(&cfg.Db.MaxIdleTime, "db-max-idle-time", "15m", "PostgresQL max connection idle time")
+	flag.Float64Var(&cfg.Limiter.RPS, "limiter-rps", 2, "Rate limiter maximum request per second")
+	flag.IntVar(&cfg.Limiter.Burst, "limiter-burst", 4, "Rate limiter maximum burst")
+	flag.BoolVar(&cfg.Limiter.Enabled, "limiter-enabled", true, "Enable rate limiter")
 	flag.Parse()
 
 	db, err := data.OpenDB(cfg)
