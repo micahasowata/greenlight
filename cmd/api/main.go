@@ -2,11 +2,8 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log/slog"
-	"net/http"
 	"os"
-	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/spobly/greenlight/internal/config"
@@ -63,17 +60,6 @@ func main() {
 		models: data.NewModels(db),
 	}
 
-	srv := &http.Server{
-		Addr:         fmt.Sprintf(":%d", cfg.Port),
-		Handler:      app.routes(),
-		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
-		IdleTimeout:  time.Minute,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 30 * time.Second,
-	}
-
-	logger.Info("starting server", slog.Group("properties", slog.String("env", cfg.Env), slog.String("addr", srv.Addr)))
-
-	err = srv.ListenAndServe()
+	err = app.serve()
 	logger.Error(err.Error())
 }
