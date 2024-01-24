@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"log/slog"
 	"net/http"
 	"os"
@@ -72,5 +71,5 @@ func main() {
 	logger.Info("starting server", slog.String("env", cfg.Env), slog.String("addr", srv.Addr))
 
 	err = srv.ListenAndServe()
-	log.Fatal(err)
+	logger.Error(err.Error())
 }
