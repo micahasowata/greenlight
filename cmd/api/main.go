@@ -63,12 +63,13 @@ func main() {
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.Port),
 		Handler:      app.routes(),
+		ErrorLog:     slog.NewLogLogger(logger.Handler(), slog.LevelError),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
 
-	logger.Info("starting server", slog.String("env", cfg.Env), slog.String("addr", srv.Addr))
+	logger.Info("starting server", slog.Group("properties", slog.String("env", cfg.Env), slog.String("addr", srv.Addr)))
 
 	err = srv.ListenAndServe()
 	logger.Error(err.Error())
