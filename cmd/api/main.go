@@ -61,5 +61,7 @@ func main() {
 	}
 
 	err = app.serve()
-	logger.Error(err.Error())
+	if err != nil {
+		logger.Error(err.Error())
+	}
 }
