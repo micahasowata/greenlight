@@ -14,7 +14,7 @@ func (app *application) healthcheckHandler(w http.ResponseWriter, r *http.Reques
 		},
 	}
 
-	time.Sleep(4 * time.Minute)
+	time.Sleep(4 * time.Second)
 
 	err := app.writeJSON(w, http.StatusOK, env, nil)
 	if err != nil {
