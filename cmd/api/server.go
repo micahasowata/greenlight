@@ -31,7 +31,7 @@ func (app *application) serve() error {
 
 		s := <-quit
 
-		app.logger.Info("caught signal", slog.Group("properties", slog.String("signal", s.String())))
+		app.logger.Info("shutting down server", slog.Group("properties", slog.String("signal", s.String())))
 
 		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 		defer cancel()
@@ -53,5 +53,6 @@ func (app *application) serve() error {
 		return err
 	}
 
+	app.logger.Info("stopped server", slog.Group("properties", slog.String("addr", srv.Addr)))
 	return nil
 }
