@@ -136,8 +136,12 @@ func (app *application) readInt(qs url.Values, key string, defaultValue int, v *
 }
 
 func (app *application) background(fn func()) {
+	app.wg.Add(1)
+
 	go func() {
 		defer func() {
+			defer app.wg.Done()
+
 			if err := recover(); err != nil {
 				app.logger.Error(fmt.Sprintf("%s", err))
 			}
