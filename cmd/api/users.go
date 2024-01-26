@@ -53,12 +53,12 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	go func() {
+	app.background(func() {
 		err = app.mailer.Send(user, user.Email, "user_welcome.tmpl")
 		if err != nil {
 			app.logger.Error(err.Error())
 		}
-	}()
+	})
 
 	err = app.writeJSON(w, http.StatusAccepted, envelope{"user": user}, nil)
 	if err != nil {
