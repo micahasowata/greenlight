@@ -6,7 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func GetHash(plaintext string) ([]byte, error) {
+func HashPassword(plaintext string) ([]byte, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(plaintext), 12)
 	if err != nil {
 		return nil, err
