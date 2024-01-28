@@ -1,17 +1,11 @@
 {{define "subject"}} Welcome to Greenlight {{ end }}
 
 {{define "plainBody"}}
-Hi {{.name}}, 
-
-Thanks for signing up for a Greenlight account. We are excited to have you on board! 
-
-Please send a PUT request to `/v1/users/activated` with the following JSON data to activate your account:
-
-{"token": "{{.activateToken}}"}
-
-Please note that this one time token would expire in 3 days
-  
-❤️ from us at Greenlight
+Hi {{.name}}, Thanks for signing up for a Greenlight account. We are excited to
+have you on board! Please send a PUT request to `/v1/users/activated` with the
+following JSON data to activate your account: {"token": "{{.activationToken}}"}
+Please note that this one time token would expire in 3 days ❤️ from us at
+Greenlight
 
 {{ end }}
 
@@ -30,10 +24,11 @@ Please note that this one time token would expire in 3 days
     </p>
 
     <p>
-      Please send a PUT request to `/v1/users/activated` with the following JSON data to activate your account:
+      Please send a PUT request to `/v1/users/activated` with the following JSON
+      data to activate your account:
     </p>
 
-    <p>{"token": "{{.activateToken}}"}</p>
+    <p>{"token": "{{.activationToken}}"}</p>
     <p>Please note that this one time token would expire in 3 days</p>
     <p>❤️ from us at Greenlight</p>
   </body>
