@@ -57,7 +57,7 @@ type TokenModel struct {
 
 func (m TokenModel) Insert(token *Token) error {
 	query := `
-	INSERT INTO tokens (hash, user_id, expiry, scope)
+	INSERT INTO tokens (hash, user_id, expiry, token_scope)
 	VALUES ($1, $2, $3, $4)`
 
 	args := []any{token.Hash, token.UserID, token.Expiry, token.Scope}
