@@ -145,9 +145,9 @@ func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error)
 		FROM users
 		INNER JOIN tokens
 		ON users.id = tokens.user_id
-		WHERE token.hash = $1
-		AND token.scope = $2
-		AND token.expiry > $3`
+		WHERE tokens.hash = $1
+		AND tokens.scope = $2
+		AND tokens.expiry > $3`
 
 	args := []any{tokenHash[:], tokenScope, time.Now()}
 
