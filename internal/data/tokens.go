@@ -65,7 +65,7 @@ func (m TokenModel) Insert(token *Token) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	_, err := m.DB.ExecContext(ctx, query, args)
+	_, err := m.DB.ExecContext(ctx, query, args...)
 	if err != nil {
 		return err
 	}
