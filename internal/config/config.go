@@ -3,6 +3,7 @@ package config
 import (
 	"flag"
 	"os"
+	"strings"
 )
 
 type Config struct {
@@ -27,6 +28,9 @@ type Config struct {
 		Password string
 		Sender   string
 	}
+	CORS struct {
+		TrustedOrigins []string
+	}
 }
 
 func (c *Config) Parse() {
@@ -44,5 +48,10 @@ func (c *Config) Parse() {
 	flag.StringVar(&c.SMTP.Username, "smtp-username", os.Getenv("SMTP_NAME"), "SMTP username")
 	flag.StringVar(&c.SMTP.Password, "smtp-password", os.Getenv("SMTP_PASSWORD"), "SMTP password")
 	flag.StringVar(&c.SMTP.Sender, "smtp-sender", os.Getenv("SMTP_SENDER"), "SMTP sender")
+	flag.Func("cors-trusted-origins", "Trusted CORS origins (space separated)", func(s string) error {
+		c.CORS.TrustedOrigins = strings.Fields(s)
+		return nil
+	})
+
 	flag.Parse()
 }
