@@ -1,6 +1,7 @@
 package main
 
 import (
+	"expvar"
 	"log/slog"
 	"os"
 	"sync"
@@ -45,6 +46,8 @@ func main() {
 	defer db.Close()
 
 	logger.Info("database connection pool established")
+
+	expvar.NewString("version").Set(version)
 
 	app := &application{
 		config: *cfg,
