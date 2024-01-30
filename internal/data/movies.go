@@ -11,6 +11,11 @@ import (
 	"github.com/spobly/greenlight/internal/validator"
 )
 
+var (
+	MoviesRead  = "movies:read"
+	MoviesWrite = "movies:write"
+)
+
 type Movie struct {
 	ID        int64     `json:"id"`
 	CreatedAt time.Time `json:"-"`
