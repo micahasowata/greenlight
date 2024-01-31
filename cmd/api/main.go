@@ -2,6 +2,8 @@ package main
 
 import (
 	"expvar"
+	"flag"
+	"fmt"
 	"log/slog"
 	"os"
 	"runtime"
@@ -38,6 +40,15 @@ func main() {
 
 	cfg := &config.Config{}
 	cfg.Parse()
+
+	displayVersion := flag.Bool("version", false, "Display version and exit")
+
+	flag.Parse()
+
+	if *displayVersion {
+		fmt.Printf("Version: \t%s\n", version)
+		os.Exit(1)
+	}
 
 	db, err := data.OpenDB(*cfg)
 	if err != nil {
