@@ -44,11 +44,7 @@ db/migrations/up: confirm
 
 ## audit: tidy dependencies, format, vet and detect race conditions in code
 .PHONY: audit 
-audit:
-	@echo 'Tidying and verifying module dependencies'
-	go mod tidy
-	go mod verify 
-
+audit: vendor
 	@echo 'Formatting code...'
 	go fmt ./...
 
