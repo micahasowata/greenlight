@@ -37,3 +37,23 @@ db/migrations/new:
 db/migrations/up: confirm
 	@echo 'Running up migrations'
 	migrate -path ./migrations -database ${GREENLIGHT_DB_DSN} up
+
+# =========================================================================== #
+# QUALITY CONTROL
+# =========================================================================== #
+
+## audit: tidy dependencies, format, vet and detect race conditions in code
+.PHONY: audit 
+audit:
+	@echo 'Tidying and verifying module dependencies'
+	go mod tidy
+	go mod verify 
+
+	@echo 'Formatting code...'
+	go fmt ./...
+
+	@echo 'Vetting code'
+	go vet ./...
+
+	@echo 'Detect race conditions'
+	go test -race -vet=off ./...
