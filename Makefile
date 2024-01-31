@@ -1,5 +1,5 @@
 confirm:
-	@echo -n 'Are you sure? [y/N]' && read ans && [ $${ans:-N} = y]
+	@echo -n 'Are you sure? [y/N] ' && read ans && [ $${ans:-N} = y ]
 
 run/api:
 	go run ./cmd/api
