@@ -14,9 +14,10 @@ import (
 	"github.com/spobly/greenlight/internal/config"
 	"github.com/spobly/greenlight/internal/data"
 	"github.com/spobly/greenlight/internal/mailer"
+	"github.com/spobly/greenlight/internal/version"
 )
 
-const version = "1.0.0"
+var appVersion = version.New()
 
 type application struct {
 	config config.Config
@@ -44,7 +45,7 @@ func main() {
 	cfg.Parse()
 
 	if *displayVersion {
-		fmt.Printf("Version: \t%s\n", version)
+		fmt.Printf("Version: \t%s\n", appVersion)
 		os.Exit(1)
 	}
 
@@ -58,7 +59,7 @@ func main() {
 
 	logger.Info("database connection pool established")
 
-	expvar.NewString("version").Set(version)
+	expvar.NewString("version").Set(appVersion)
 
 	expvar.Publish("goroutines", expvar.Func(func() any {
 		return runtime.NumGoroutine()
